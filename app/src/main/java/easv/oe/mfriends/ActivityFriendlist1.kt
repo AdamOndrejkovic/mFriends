@@ -1,5 +1,6 @@
 package easv.oe.mfriends
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
@@ -9,6 +10,9 @@ import com.easv.oe.friends.Model.Friends
 import kotlinx.android.synthetic.main.activity_friendlist.*
 
 class ActivityFriendlist1 : AppCompatActivity() {
+
+    private val REQUEST_CODE_ANSWER = 12
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_friendlist)
@@ -25,15 +29,13 @@ class ActivityFriendlist1 : AppCompatActivity() {
     }
 
     fun onListItemClick( position: Int ) {
-        // position is in the list!
-        // first get the name of the person clicked
+
         val name = Friends().getAll()[position].name
-        // and a greeting
-        Toast.makeText(
-            this,
-            "Hi $name! Have you done your homework?",
-            Toast.LENGTH_LONG
-        ).show()
+
+        Intent(this, CreateFriendActivity::class.java).also {
+            it.putExtra("EXTRA_FRIEND", position)
+            startActivityForResult(it, REQUEST_CODE_ANSWER)
+        }
 
 
     }

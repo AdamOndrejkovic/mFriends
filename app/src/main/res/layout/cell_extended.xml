@@ -11,6 +11,7 @@
         android:layout_height="40dp"
         android:layout_margin="10dp"
         android:scaleType="fitCenter"
+        android:layout_gravity="center"
         android:src="@drawable/ok" />
 
     <LinearLayout
@@ -34,6 +35,15 @@
             android:text="PHONE"
             android:textStyle="bold"
             android:textSize="15dp"
+            android:textColor="@color/phoneColor"/>
+
+        <TextView
+            android:id="@+id/tvAddressExt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Address"
+            android:textStyle="bold"
+            android:textSize="15sp"
             android:textColor="@color/phoneColor"/>
     </LinearLayout>
 

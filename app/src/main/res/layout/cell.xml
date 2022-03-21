@@ -20,4 +20,12 @@
         android:textStyle="bold"
         android:textColor="@color/phoneColor"/>
 
+    <TextView
+        android:id="@+id/address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ADDRESS"
+        android:textStyle="bold"
+        android:textColor="@color/phoneColor"/>
+
 </LinearLayout>
