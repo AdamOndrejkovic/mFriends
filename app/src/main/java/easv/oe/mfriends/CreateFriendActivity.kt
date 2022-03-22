@@ -161,7 +161,9 @@ class CreateFriendActivity: AppCompatActivity() {
     }
 
     fun onDelete(view: View){
-        Friends().getAll().drop(position)
+        Friends.mFriends.removeAt(position)
+        val s = Friends.mFriends.size
+        Log.d("xy", "$s")
         val intent = Intent()
         setResult(RESULT_OK, intent)
         finish()
@@ -178,7 +180,7 @@ class CreateFriendActivity: AppCompatActivity() {
         }
         else {
             val friend = BEFriend(nameInput.text.toString(), phoneInput.text.toString(), favoriteCheck.isChecked, "Random Address")
-            Friends().getAll().plus(friend)
+            Friends.mFriends.plus(friend)
         }
 
         val intent = Intent()
@@ -198,7 +200,7 @@ class CreateFriendActivity: AppCompatActivity() {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
 
         // Add extra to inform the app where to put the image.
-        val applicationId = "easv.oe.mcamera1"
+        val applicationId = "easv.oe.mfriends"
         intent.putExtra(
             MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(
             this,

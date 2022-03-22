@@ -3,6 +3,7 @@ package easv.oe.mfriends
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.ListAdapter
 import android.widget.Toast
@@ -32,10 +33,26 @@ class ActivityFriendlist1 : AppCompatActivity() {
 
         val name = Friends().getAll()[position].name
 
+        val s = Friends.mFriends.size
+        Log.d("xy", "$s")
+
         Intent(this, CreateFriendActivity::class.java).also {
             it.putExtra("EXTRA_FRIEND", position)
             startActivityForResult(it, REQUEST_CODE_ANSWER)
         }
+
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        val mFriendNames: Array<String> = Friends().getAllNames()
+
+        val adapter : ListAdapter  = ArrayAdapter<String>(this,
+            android.R.layout.simple_list_item_1,
+            mFriendNames)
+
+        lvFriends.adapter = adapter
 
 
     }
