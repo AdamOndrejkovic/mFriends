@@ -4,29 +4,45 @@ import android.Manifest
 import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.telephony.SmsManager
 import android.text.Editable
 import android.util.Log
 import android.view.View
-import android.widget.CheckBox
-import android.widget.EditText
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.FileProvider
 import com.easv.oe.friends.Model.BEFriend
 import com.easv.oe.friends.Model.Friends
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.RelativeLayout
+import android.widget.TextView
+import android.widget.Toast
 
 class CreateFriendActivity: AppCompatActivity() {
 
     val PHONE_NO = "12345678"
     val TAG = "xyz"
     var position = -1
+    private val PERMISSION_REQUEST_CODE = 1
+    val CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE_BY_FILE = 101
+    var mFile: File? = null
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create)
+        checkPermissions()
 
         val position = intent.getIntExtra("EXTRA_FRIEND", -1)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
@@ -44,9 +60,6 @@ class CreateFriendActivity: AppCompatActivity() {
         }else {
             supportActionBar!!.title = "Create new friend"
         }
-
-
-
     }
 
     override fun onBackPressed() {
@@ -76,8 +89,6 @@ class CreateFriendActivity: AppCompatActivity() {
         sendIntent.putExtra("sms_body", "Hi, it goes well on the android course...")
         startActivity(sendIntent)
     }
-
-    val PERMISSION_REQUEST_CODE = 1
 
     private fun sendSMSDirectly() {
         Toast.makeText(this, "An sms will be send", Toast.LENGTH_LONG)
@@ -169,12 +180,94 @@ class CreateFriendActivity: AppCompatActivity() {
             val friend = BEFriend(nameInput.text.toString(), phoneInput.text.toString(), favoriteCheck.isChecked, "Random Address")
             Friends().getAll().plus(friend)
         }
-        
-        Log.d("xyz", nameInput.text.toString())
-        Log.d("xyz", phoneInput.text.toString())
 
         val intent = Intent()
         setResult(RESULT_OK, intent)
         finish()
+    }
+
+    fun onCamera(view: View) {
+        mFile = getOutputMediaFile("Camera01") // create a file to save the image
+
+        if (mFile == null) {
+            Toast.makeText(this, "Could not create file...", Toast.LENGTH_LONG).show()
+            return
+        }
+
+        // create Intent to take a picture
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+
+        // Add extra to inform the app where to put the image.
+        val applicationId = "easv.oe.mcamera1"
+        intent.putExtra(
+            MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(
+            this,
+            "${applicationId}.provider",  //use your app signature + ".provider"
+            mFile!!))
+
+        startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE_BY_FILE)
+    }
+
+    //Checks if the app has the required permissions, and prompts the user with the ones missing.
+    private fun checkPermissions() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return
+        val permissions = mutableListOf<String>()
+        if ( ! isGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE) ) permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if ( ! isGranted(Manifest.permission.CAMERA) ) permissions.add(Manifest.permission.CAMERA)
+        if (permissions.size > 0)
+            ActivityCompat.requestPermissions(this, permissions.toTypedArray(), PERMISSION_REQUEST_CODE)
+    }
+
+
+    private fun isGranted(permission: String): Boolean =
+        ActivityCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
+
+
+    // return a new file with a timestamp name in a folder named [folder] in
+    // the external directory for pictures.
+    // Return null if the file cannot be created
+    private fun getOutputMediaFile(folder: String): File? {
+        // in an emulated device you can see the external files in /sdcard/Android/data/<your app>.
+        val mediaStorageDir = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), folder)
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                Log.d(TAG, "failed to create directory")
+                return null
+            }
+        }
+
+        // Create a media file name
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val postfix = "jpg"
+        val prefix = "IMG"
+        return File(mediaStorageDir.path +
+                File.separator + prefix +
+                "_" + timeStamp + "." + postfix)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        val mImage = findViewById<ImageView>(R.id.imgView)
+        when (requestCode) {
+            CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE_BY_FILE ->
+                if (resultCode == RESULT_OK)
+                    showImageFromFile(mImage, mFile!!)
+                else handleOther(resultCode)
+        }
+    }
+
+    private fun handleOther(resultCode: Int) {
+        if (resultCode == RESULT_CANCELED)
+            Toast.makeText(this, "Canceled...", Toast.LENGTH_LONG).show()
+        else Toast.makeText(this, "Picture NOT taken - unknown error...", Toast.LENGTH_LONG).show()
+    }
+
+
+    // show the image allocated in [f] in imageview [img]. Show meta data in [txt]
+    private fun showImageFromFile(img: ImageView, f: File) {
+        img.setImageURI(Uri.fromFile(f))
+        img.setBackgroundColor(Color.RED)
+        //mImage.setRotation(90);
     }
 }

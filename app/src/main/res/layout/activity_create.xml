@@ -10,7 +10,40 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="-93dp">
+
+        <LinearLayout
+            android:id="@+id/lyImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:paddingTop="15dp">
+
+            <ImageView
+                android:id="@+id/imgView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:adjustViewBounds="true"
+                android:maxWidth="200dp"
+                android:maxHeight="200dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ape" />
+
+            <Button
+                android:id="@+id/camera"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:insetTop="100dp"
+                android:onClick="onCamera"
+                android:text="@string/camera"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/lyName"
@@ -31,11 +64,11 @@
 
             <EditText
                 android:id="@+id/etName"
-                android:minWidth="100dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:text=""/>
+                android:minWidth="100dp"
+                android:text=""
+                android:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -44,8 +77,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:orientation="horizontal"
-            android:paddingTop="15dp"
-            >
+            android:paddingTop="15dp">
 
             <TextView
                 android:id="@+id/tvPhone"
@@ -58,11 +90,11 @@
 
             <EditText
                 android:id="@+id/etPhone"
-                android:minWidth="100dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:text=""/>
+                android:minWidth="100dp"
+                android:text=""
+                android:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -90,6 +122,71 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/lyMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:paddingTop="15dp">
+
+            <EditText
+                android:id="@+id/etMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:minWidth="200dp"
+                android:text=""
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/btnMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:onClick="onMessage"
+                android:text="@string/message"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <Button
+                android:id="@+id/btnEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onEmail"
+                android:text="@string/email"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lyWeb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:paddingTop="15dp">
+
+            <EditText
+                android:id="@+id/etWeb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:minWidth="200dp"
+                android:text=""
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/web"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onWeb"
+                android:text="@string/web"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/lyInteractive"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -101,40 +198,10 @@
                 android:id="@+id/btnCall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="onCall"
                 android:text="@string/call"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:onClick="onCall"
-                />
-            <Button
-                android:id="@+id/btnMessage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/message"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:onClick="onMessage"
-                />
-
-            <Button
-                android:id="@+id/btnEmail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/email"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:onClick="onEmail"
-                />
-
-            <Button
-                android:id="@+id/web"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/web"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:onClick="onWeb"
-                />
+                app:layout_constraintEnd_toEndOf="parent" />
         </LinearLayout>
     </LinearLayout>
 
